@@ -1,8 +1,9 @@
 import React from 'react';
 import './App.css';
-import vocab from './data/vocab.json';
+import VocabList from './data/vocab.json';
 import Grid from '@mui/material/Grid';
 import Button from '@mui/material/Button';
+import _shuffle from 'lodash/shuffle';
 
 interface QuestionPanelProps {
   text: string;
@@ -90,21 +91,29 @@ const AnswersGroup: React.FC<AnswersGroupProps> = ({
   );
 };
 
-function App() {
-  const question = vocab[0];
+const VocabPractice = () => {
+  const vocabList = _shuffle(VocabList);
+  const question = vocabList[0];
   const kangi = question.kanji;
+  return (
+    <>
+      <QuestionPanel text={kangi} />
+      <AnswersGroup
+        option1={vocabList[0].hiragana}
+        option2={vocabList[1].hiragana}
+        option3={vocabList[2].hiragana}
+        option4={vocabList[3].hiragana}
+        answer={vocabList[0].hiragana}
+      />
+    </>
+  );
+};
 
+function App() {
   return (
     <div className="app">
       <header className="app-panel">
-        <QuestionPanel text={kangi} />
-        <AnswersGroup
-          option1={vocab[0].hiragana}
-          option2={vocab[1].hiragana}
-          option3={vocab[2].hiragana}
-          option4={vocab[3].hiragana}
-          answer={vocab[0].hiragana}
-        />
+        <VocabPractice />
       </header>
     </div>
   );
