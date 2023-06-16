@@ -1,16 +1,22 @@
 import React from 'react';
 import './App.css';
-import VocabList from './data/vocab.json';
+import Vocab from './data/vocab.json';
 import Grid from '@mui/material/Grid';
 import Button from '@mui/material/Button';
 import _shuffle from 'lodash/shuffle';
 
 interface QuestionPanelProps {
   text: string;
+  meaning: string;
 }
 
-const QuestionPanel: React.FC<QuestionPanelProps> = ({ text }) => {
-  return <div className="question_panel">{text}</div>;
+const QuestionPanel: React.FC<QuestionPanelProps> = ({ text, meaning }) => {
+  return (
+    <>
+      <div className="question_panel">{text}</div>
+      <div className="question_panel_meaning">({meaning})</div>
+    </>
+  );
 };
 
 interface AnswersGroupProps {
@@ -18,7 +24,9 @@ interface AnswersGroupProps {
   option2: string;
   option3: string;
   option4: string;
+  input: string;
   answer: string;
+  setInput: React.Dispatch<React.SetStateAction<string>>;
 }
 
 const AnswersGroup: React.FC<AnswersGroupProps> = ({
@@ -26,10 +34,11 @@ const AnswersGroup: React.FC<AnswersGroupProps> = ({
   option2,
   option3,
   option4,
-  answer
+  input,
+  answer,
+  setInput
 }) => {
   const AnswerButtonStyle = { fontSize: '20px' };
-  const [input, setInput] = React.useState<string>('');
 
   const getButtonColor = (option: string) => {
     if (input === '') {
@@ -91,20 +100,58 @@ const AnswersGroup: React.FC<AnswersGroupProps> = ({
   );
 };
 
+interface NextQuestionButtonProps {
+  nextQuestion: () => void;
+}
+
+const NextQuestionButton: React.FC<NextQuestionButtonProps> = ({ nextQuestion }) => {
+  const NextQuestionButtonStyle = { marginTop: '10px' };
+  return (
+    <Grid container style={NextQuestionButtonStyle} spacing={1}>
+      <Grid item className="next_button" xs={12}>
+        <Button className="next_button" variant="contained" onClick={nextQuestion}>
+          Next
+        </Button>
+      </Grid>
+    </Grid>
+  );
+};
+
+interface VocabProps {
+  kanji: string;
+  meaning: string;
+  hiragana: string;
+}
+
 const VocabPractice = () => {
-  const vocabList = _shuffle(VocabList);
-  const question = vocabList[0];
-  const kangi = question.kanji;
+  const [vocab, setVocab] = React.useState<VocabProps[]>(_shuffle(Vocab));
+  const [qa, setQA] = React.useState<number[]>(_shuffle([0, 1, 2, 3]));
+  const [input, setInput] = React.useState<string>('');
+
+  const nextQuestion = () => {
+    setInput('');
+    setVocab(_shuffle(Vocab));
+    setQA(_shuffle(qa));
+  };
+
+  const qnIdx = qa[0];
+  const kanji = vocab[qnIdx].kanji;
+  const meaning = vocab[qnIdx].meaning;
+  const answer = vocab[qnIdx].hiragana;
+
   return (
     <>
-      <QuestionPanel text={kangi} />
+      <QuestionPanel text={kanji} meaning={meaning} />
       <AnswersGroup
-        option1={vocabList[0].hiragana}
-        option2={vocabList[1].hiragana}
-        option3={vocabList[2].hiragana}
-        option4={vocabList[3].hiragana}
-        answer={vocabList[0].hiragana}
+        option1={vocab[0].hiragana}
+        option2={vocab[1].hiragana}
+        option3={vocab[2].hiragana}
+        option4={vocab[3].hiragana}
+        input={input}
+        answer={answer}
+        setInput={setInput}
       />
+      <NextQuestionButton nextQuestion={nextQuestion} />
     </>
   );
 };
