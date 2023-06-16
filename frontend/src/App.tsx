@@ -276,7 +276,7 @@ const ListeningPractice = () => {
 };
 
 function App() {
-  const [tabValue, setTabValue] = React.useState(1);
+  const [tabValue, setTabValue] = React.useState(0);
 
   const changeTabValue = (event: React.SyntheticEvent, newValue: number) => {
     setTabValue(newValue);
