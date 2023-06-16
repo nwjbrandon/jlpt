@@ -206,8 +206,14 @@ const ListeningPractice = () => {
   };
 
   const play = () => {
+    const voices = window.speechSynthesis.getVoices();
     const u = new SpeechSynthesisUtterance(answer);
-    u.lang = 'ja-JP';
+    const lang = 'ja-JP';
+    const voice = voices.find((voice) => voice.lang === lang);
+    if (voice !== undefined) {
+      u.voice = voice;
+    }
+    u.lang = lang;
     synth.speak(u);
   };
 
