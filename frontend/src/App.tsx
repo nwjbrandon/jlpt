@@ -27,25 +27,62 @@ const AnswersGroup: React.FC<AnswersGroupProps> = ({
   option4,
   answer
 }) => {
+  const AnswerButtonStyle = { fontSize: '20px' };
+  const [input, setInput] = React.useState<string>('');
+
+  const getButtonColor = (option: string) => {
+    if (input === '') {
+      return 'primary';
+    }
+    if (option === input) {
+      if (input === answer) {
+        return 'success';
+      } else {
+        return 'error';
+      }
+    }
+    return 'primary';
+  };
+
   return (
     <Grid container spacing={1}>
       <Grid item className="answer_button" xs={6}>
-        <Button style={{ fontSize: '20px' }} variant="outlined">
+        <Button
+          style={AnswerButtonStyle}
+          variant="outlined"
+          onClick={() => setInput(option1)}
+          color={getButtonColor(option1)}
+        >
           {option1}
         </Button>
       </Grid>
       <Grid item className="answer_button" xs={6}>
-        <Button style={{ fontSize: '20px' }} variant="outlined">
+        <Button
+          style={AnswerButtonStyle}
+          variant="outlined"
+          onClick={() => setInput(option2)}
+          color={getButtonColor(option2)}
+        >
           {option2}
         </Button>
       </Grid>
       <Grid item className="answer_button" xs={6}>
-        <Button style={{ fontSize: '20px' }} variant="outlined">
+        <Button
+          style={AnswerButtonStyle}
+          variant="outlined"
+          onClick={() => setInput(option3)}
+          color={getButtonColor(option3)}
+        >
           {option3}
         </Button>
       </Grid>
       <Grid item className="answer_button" xs={6}>
-        <Button style={{ fontSize: '20px' }} variant="outlined">
+        <Button
+          style={AnswerButtonStyle}
+          variant="outlined"
+          onClick={() => setInput(option4)}
+          color={getButtonColor(option4)}
+        >
           {option4}
         </Button>
       </Grid>
