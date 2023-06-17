@@ -250,7 +250,7 @@ const ListeningPractice = () => {
   return (
     <>
       <div className="question_panel">
-        {isCorrect === null ? 'Click play to hear the text' : 'Text: ' + answer}
+        {isCorrect === null ? 'Click play to listen' : 'Answer: ' + answer}
       </div>
       <Grid container style={ListeningPracticeStyle} spacing={1}>
         <Grid item xs={12}>
@@ -258,20 +258,22 @@ const ListeningPractice = () => {
             focused
             type="text"
             fullWidth
-            value={input}
-            id="outlined-basic"
+            id="user-input"
             label="Write here"
             variant="outlined"
+            inputProps={{ autoComplete: 'new-password' }}
+            sx={{ input: { color: 'white' } }}
+            value={input}
             onChange={(event) => setInput(event.target.value)}
           />
         </Grid>
         <Grid item className="answer_button" xs={6}>
-          <Button variant="contained" onClick={play}>
+          <Button variant="outlined" onClick={play}>
             Play
           </Button>
         </Grid>
         <Grid item className="answer_button" xs={6}>
-          <Button variant="contained" onClick={checkAnswer} color={getButtonColor()}>
+          <Button variant="outlined" onClick={checkAnswer} color={getButtonColor()}>
             Check
           </Button>
         </Grid>
